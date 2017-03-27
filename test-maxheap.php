@@ -1,10 +1,8 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: Noah
- * Date: 3/26/2017
- * Time: 9:43 PM
- */
+
+
+// TESTING SOMETHING
+
 
 class RankHeap extends SplHeap {
 

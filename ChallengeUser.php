@@ -1,6 +1,7 @@
 <?php
 
 /**
+ * Represents a user in the challenge. This classes handles the rounds.
  * @Class ChallengeUser
  */
 class ChallengeUser {
@@ -13,6 +14,9 @@ class ChallengeUser {
     protected $rounds = [];
     protected $numRounds = 0;
 
+    /**
+     * @var array Hash to handle the round ID's for quick lookup of $rounds by database ID.
+     */
     private $hashMap = [];
     private $sumOfAllScores = 0;
 
@@ -21,15 +25,23 @@ class ChallengeUser {
         $this->username = $username;
     }
 
+    /**
+     * Add a new round.
+     * The players average score out all his rounds is automatically updated.
+     * @param int $roundId
+     * @param float $primaryStat
+     * @param float $secondaryStat
+     * @return bool
+     */
     public function addRound(int $roundId, float $primaryStat, float $secondaryStat ) {
-        if( isset($hashMap[$roundId]) ) return false;
+        if( isset($this->hashMap[$roundId]) ) return false;
         $round = (object)[
             'id' => $roundId,
             'primaryStat' => $primaryStat,
             'secondaryStat' => $secondaryStat
         ];
         $this->sumOfAllScores += $primaryStat;
-        $hashMap[$roundId] = array_push($this->rounds, $round);
+        $this->hashMap[$roundId] = array_push($this->rounds, $round) - 1;
         $this->numRounds++;
         $this->calculateAvgScore();
     }
@@ -44,6 +56,10 @@ class ChallengeUser {
         return $oldround;
     }
 
+    /**
+     * Maintain the average score of user's rounds with O(1) time.
+     * @return float|int
+     */
     private function calculateAvgScore() {
         $this->avgScore = $this->sumOfAllScores / $this->numRounds;
         return $this->avgScore;
