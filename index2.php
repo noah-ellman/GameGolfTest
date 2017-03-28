@@ -14,28 +14,26 @@ include "ChallengeUser.php";
 $challenge = new ChallengeManager();
 
 
-function addRandomUsers(ChallengeManager $challenge, int $how_many) {
-    $i = $how_many;
-    while ($i--) {
-        $userId = mt_rand(1, $how_many * 10);
-        $challenge->addUser($userId, crc32($userId));
-        $ii = 3;
-        while ($ii--) {
-            $challenge->addUserRound($userId, mt_rand(1, 100), (float)mt_rand(50, 99), 0);
-        }
-    }
+$challenge->addUser(1, crc32(1));
+$challenge->addUserRound(1, 1, 50, 0);
+$challenge->addUser(2, crc32(2));
+$challenge->addUserRound(2, 1, 45, 0);
+$challenge->addUserRound(2, 2, 90, 0);
 
-}
+$challenge->addUser(3, crc32(1));
+$challenge->addUserRound(3, 1, 20, 0);
+$challenge->addUser(4, crc32(4));
+$challenge->addUserRound(4, 1, 99, 0);
+$challenge->addUserRound(4, 2, 95, 0);
 
-addRandomUsers($challenge, 10);
 
 $startTime = microtime(true);
-//$challenge->calculateRanks();
+$challenge->calculateRanks();
 $runtime =  microtime(true) - $startTime;
 $runtime *= 1000;
 
 echo "\nTOP FIVE:\n";
-echo "Rank\t\tUser\t\tScore\n";
+echo "Rank\tUser\t\tScore\n";
 foreach( $challenge->getRanks() as $k => $v ) {
     if( $k > 5 ) break;
     echo $k . "\t" .  $v->username . "\t" . $v->avgScore . "\n";
