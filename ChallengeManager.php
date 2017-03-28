@@ -34,7 +34,7 @@ class ChallengeManager implements IChallengeManager {
         if ($this->hasUser($userId)) return;
         $newUser = new ChallengeUser($userId, $username);
         $this->usersHash[ $userId ] = array_push($this->users, $newUser) - 1;
-        $newUser->rank = count($this->ranks) - 1;
+        $newUser->rank = count($this->ranks);
         $this->ranks[] = $newUser;
     }
 
