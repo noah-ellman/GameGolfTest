@@ -29,6 +29,8 @@ class ChallengeManager implements IChallengeManager {
      */
     private $valid = true;
 
+
+
     public function __construct() { }
 
     public function addUser(int $userId, string $username) : void {

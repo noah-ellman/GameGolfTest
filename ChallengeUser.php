@@ -9,16 +9,18 @@ class ChallengeUser {
     public $id = 0;
     public $username = "John";
     public $avgScore = 0;
+    public $avgScorePrevious = 0;
     public $rank = null;
 
     protected $rounds = [];
-    protected $numRounds = 0;
 
     /**
      * @var array Hash to handle the round ID's for quick lookup of $rounds by database ID.
      */
     private $hashMap = [];
     private $sumOfAllScores = 0;
+    private $numRounds = 0;
+
 
     public function __construct( $userId, $username) {
         $this->id = $userId;
@@ -44,6 +46,7 @@ class ChallengeUser {
         $this->hashMap[$roundId] = array_push($this->rounds, $round) - 1;
         $this->numRounds++;
         $this->calculateAvgScore();
+        return true;
     }
 
     public function removeRound(int $roundId) {
@@ -61,6 +64,7 @@ class ChallengeUser {
      * @return float|int
      */
     private function calculateAvgScore() {
+        $this->avgScorePrevious = $this->avgScore;
         $this->avgScore = $this->sumOfAllScores / $this->numRounds;
         return $this->avgScore;
     }
